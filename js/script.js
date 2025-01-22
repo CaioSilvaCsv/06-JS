@@ -1,8 +1,12 @@
 //quadro do jogo
 let jogo;
-let jogoWidth = 500;
+let jogoWidth = 375;
 let jogoHeight = 500;
 let context;
+
+var tamanhoNavegador = window.innerWidth;
+
+if (tamanhoNavegador>800) jogoWidth = 500;
 
 //jogador
 let jogadorWidth = 80;
@@ -26,11 +30,11 @@ let gameOver = false;
 //bola
 let bolaWidth = 10;
 let bolaHeight = 10;
-let bolaVelocityX = 3;
-let bolaVelocityY = 2;
+var bolaVelocityX = 3;
+var bolaVelocityY = 2;
 
 let bola = {
-    x : numAleatorio(0, 500),
+    x : numAleatorio(0, jogoWidth),
     y : jogoHeight/2,
     width : bolaWidth,
     height : bolaHeight,
@@ -42,7 +46,8 @@ let bola = {
 let blockArray = [];
 let blockWidth = 50;
 let blockHeight = 10;
-let blockColumns = 8;
+var blockColumns = 6;
+if(jogoWidth==500) blockColumns = 8;
 let blockRows = 3; // É adicionado mais ao decorrer do jogo.
 let blockMaxRows = 10;
 let blockCount = 0;
@@ -99,6 +104,10 @@ function update(){
 
     //jogador computador
     if(modoComputador){
+
+        bolaVelocityX = 6;
+        bolaVelocityY = 4;
+
         context.fillStyle = "red";
         context.fillRect(jogadorComputador.x, jogadorComputador.y
             , jogadorComputador.width, jogadorComputador.height);
@@ -110,12 +119,15 @@ function update(){
                 jogadorComputador.x = nextJogadorX;
             }
         }
-         else if (bola.x < jogadorComputadorCentro) {
+        else if (bola.x < jogadorComputadorCentro) {
             let nextJogadorX = jogadorComputador.x - jogadorComputadorSpeedX;
             if (!limites({ x: nextJogadorX, width: jogadorComputadorWidth })) {
                 jogadorComputador.x = nextJogadorX;
             }
         }
+    }else{
+        bolaVelocityX = 3;
+        bolaVelocityY = 2;
     }
     
     //bola
@@ -138,13 +150,11 @@ function update(){
         if(modoComputador){
             pontuacaoComputador++;
             bola.velocityY*= -1;
-            if(pontuacaoComputador == 4){
-                context.font = "15px sans-serif";
-                context.fillText(" O computador ganhou!", 180, 400);
+            if(pontuacaoComputador >= 4){ 
+                frase("15px sans-serif", "O computador ganhou!", 400);
                 fimJogo();
             }
         }else{
-            context.font = "15px sans-serif";
             fimJogo();
         }        
     }
@@ -187,7 +197,7 @@ function update(){
     //Pontuação
     context.font = "20px serif";
     context.fillText(pontuacao, 10, 25);
-    if(modoComputador) context.fillText(pontuacaoComputador, 450, 25);
+    if(modoComputador) context.fillText(pontuacaoComputador, jogoWidth-30, 25);
 }
 
 function limites(xPosition){
@@ -266,7 +276,7 @@ function resetGame(){
     };
 
     bola = {
-        x : numAleatorio(0, 500),
+        x : numAleatorio(0, jogoWidth),
         y : jogoHeight/2,
         width : bolaWidth,
         height : bolaHeight,
@@ -327,23 +337,28 @@ function salvaPontuacao(jogadorNome, pontuacao){
 }
 
 function fimJogo(){
-    context.fillText("Fim de jogo: Precione 'Espaço' para reiniciar.", 100, 420);
-    context.font="25px monospace";
-    context.fillText(`${nomeJogador} adiquiriu ${pontuacao} pontos.`, 50, 200);
+    frase("15px monospace","Fim de jogo: Precione 'Espaço' para reiniciar.", 420);
+    frase("20px monospace",`${nomeJogador} adiquiriu ${pontuacao} pontos.`, 200);
     salvaPontuacao(nomeJogador, pontuacao);
     listarRanking();
     gameOver = true;
 }
 
+//para definir no meio da tela a frase
+function frase(font, frase, posicao){
+    context.font = font;
+    let largura = (jogoWidth-context.measureText(frase).width)/2;
+    context.fillText(frase, largura, posicao);
+
+}
 
 //parte do jogador computador:
 let modoComputador = false;
 
 let jogadorComputadorWidth = 80;
 let jogadorComputadorHeight = 10;
-let jogadorComputadorSpeedX = 10;
+let jogadorComputadorSpeedX = 6;
 let pontuacaoComputador = 0;
-let pontuacaoJogador = 0;
 
 let jogadorComputador = {
     x: jogoWidth / 2 - jogadorComputadorWidth / 2,
