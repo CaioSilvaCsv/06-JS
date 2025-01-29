@@ -125,6 +125,9 @@ function update(){
                 }
             }
         }
+    }else{
+        bolaVelocityX = 3;
+        bolaVelocityY = 2;
     }
     
     //bola
@@ -208,7 +211,7 @@ function update(){
     //Pontuação
     context.font = "20px serif";
     context.fillText(pontuacao, 10, 25);
-    if(modoComputador) context.fillText(pontuacaoComputador, 450, 25);
+    if(modoComputador) context.fillText(pontuacaoComputador, jogoWidth-30, 25);
 }
 
 function limites(xPosition){
@@ -401,6 +404,13 @@ function ganhador(pt, ptC){
     frase("15px monospace", `${ganhador}`, 400);
 }
 
+//para definir no meio da tela a frase
+function frase(font, frase, posicao){
+    context.font = font;
+    let largura = (jogoWidth-context.measureText(frase).width)/2;
+    context.fillText(frase, largura, posicao);
+
+}
 
 //parte do jogador computador:
 let modoComputador = false;
@@ -409,7 +419,6 @@ let jogadorComputadorWidth = 80;
 let jogadorComputadorHeight = 10;
 let jogadorComputadorSpeedX = 5;//Velocidade de movimento do jogador.
 let pontuacaoComputador = 0;
-let pontuacaoJogador = 0;
 
 let jogadorComputador = {
     x: jogoWidth / 2 - jogadorComputadorWidth / 2,
