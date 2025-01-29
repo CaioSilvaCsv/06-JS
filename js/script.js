@@ -404,13 +404,6 @@ function ganhador(pt, ptC){
     frase("15px monospace", `${ganhador}`, 400);
 }
 
-//para definir no meio da tela a frase
-function frase(font, frase, posicao){
-    context.font = font;
-    let largura = (jogoWidth-context.measureText(frase).width)/2;
-    context.fillText(frase, largura, posicao);
-
-}
 
 //parte do jogador computador:
 let modoComputador = false;
