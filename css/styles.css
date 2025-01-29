@@ -15,9 +15,16 @@ body{
     justify-content: center;
     flex-wrap: wrap;
     background-color: var(--background-color-page);
-    color:var(--corborda)
+    color:var(--corborda);
 }
 
+a{
+  color: var(--corborda);
+  text-decoration: none;
+}
+a:hover{
+  font-size: .9rem;
+}
 #jogo{
     display: block;
     align-items: center;

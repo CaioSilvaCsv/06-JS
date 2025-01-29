@@ -105,7 +105,7 @@ function update(){
 
     //jogador computador
     if(modoComputador){
-        context.fillStyle = "red";
+        context.fillStyle = "yellow";
         context.fillRect(jogadorComputador.x, jogadorComputador.y
             , jogadorComputador.width, jogadorComputador.height);
     
