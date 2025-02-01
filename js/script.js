@@ -110,7 +110,6 @@ function update(){
             , jogadorComputador.width, jogadorComputador.height);
     
         let jogadorComputadorCentro = jogadorComputador.x + jogadorComputador.width / 2;
-        console.log(bolaComputador.velocidadeBolaY)
         if (bolaComputador.y > (jogoHeight / 2) + 10 && bolaComputador.velocityY > 0) {
                 if (bolaComputador.x > jogadorComputadorCentro) {
                 let nextJogadorX = jogadorComputador.x + jogadorComputadorSpeedX;
