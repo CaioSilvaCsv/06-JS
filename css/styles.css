@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap');
 
 :root{
-    --corborda: rgb(30, 100, 128);
+    --corborda: rgb(17, 56, 71);
     --background-color: rgb(0, 0, 0);
     --background-color-page: rgb(255, 255, 255);
 }
@@ -29,8 +29,8 @@ a:hover{
     display: block;
     align-items: center;
     justify-content: center;
-    text-align: center;
     background-color: var(--background-color);
+    border-radius: .5rem;
     border-top: .5rem solid var(--corborda);
     border-left: .5rem solid var(--corborda);
     border-right: .5rem solid var(--corborda);
