@@ -25,14 +25,22 @@
         
         </ul>
     </div>
-    <div class="computador">
-        <p>
-            Modo contra o computador 
-        </p>
-        <div class="button r" id="button">
-            <input type="checkbox" class="checkbox" id="checkbox" />
-            <div class="knobs"></div>
-            <div class="layer"></div>
+    <div class="opcoes">
+        <select name="dificuldade" id="dificuldade" onchange="dificuldade()">
+            <option value="facil">Fácil</option>
+            <option value="medio">Médio</option>
+            <option value="dificil">Dificil</option>
+        </select>
+        <div class="computador">
+            <p>
+                Modo contra o computador
+            </p>
+            <div class="button r" id="button">
+                <input type="checkbox" class="checkbox" id="checkbox" />
+                <div class="knobs"></div>
+                <div class="layer"></div>
+            
+            </div>
         </div>
     </div>
 </body>

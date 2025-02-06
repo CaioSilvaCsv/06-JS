@@ -57,14 +57,16 @@ let blockCount = 0;
 let blockX = 15;
 let blockY = 45;
 
+//Sobre a dificuldade
+let alturaNivel = 10;
+
 
 window.onload = function(){
     jogo = document.getElementById("jogo");
-    nomeJogador = jogadorNome();
     jogo.height = jogoHeight;
     jogo.width = jogoWidth;
     context = jogo.getContext("2d"); //feito para desenhar o jogo.
-
+    nomeJogador = jogadorNome();
     //Desenhar inicio do jogo.
     context.fillStyle = "lightgreen";
     context.fillRect(jogador.x, jogador.y, jogador.width, jogador.height);
@@ -82,7 +84,6 @@ window.onload = function(){
     computador.addEventListener("change", function(){
         modoComputador = computador.checked;
     });
-
     //Criando os blocos.
     createBlocks();
     listarRanking();
@@ -110,7 +111,7 @@ function update(){
             , jogadorComputador.width, jogadorComputador.height);
     
         let jogadorComputadorCentro = jogadorComputador.x + jogadorComputador.width / 2;
-        if (bolaComputador.y > (jogoHeight / 2) + 10 && bolaComputador.velocityY > 0) {
+        if (bolaComputador.y > (jogoHeight / 2) - 30 && bolaComputador.velocityY > 0) {
                 if (bolaComputador.x > jogadorComputadorCentro) {
                 let nextJogadorX = jogadorComputador.x + jogadorComputadorSpeedX;
                 if (!limites({ x: nextJogadorX, width: jogadorComputadorWidth })) {
@@ -146,6 +147,8 @@ function update(){
     //A detecção da bola batendo nas paredes e o rebote e caso toque no "chão" será descontado 100 pontos.
     if (fim = rebote(bola) == 1) pontuacao - 100;
     if (fim = rebote(bolaComputador) == 1 ) pontuacaoComputador - 100;
+
+    if(((bola.velocityX == 0) && (bola.velocityY == 0)) && ((bolaComputador.velocityX == 0) && (bolaComputador.velocityY == 0))) fimJogo();
 
     // bater a bola e subir novamente.
     if(topColisao(bola, jogador) || bottomColisao(bola, jogador)){
@@ -201,16 +204,21 @@ function update(){
     if (blockCount == 0){
         pontuacao += 100*blockRows*blockColumns; //Pontuação extra
         pontuacaoComputador += 100*blockRows*blockColumns;
-        velocidadeBolaX += 2;//Quando os blocos acabarem a velocidade irá aumentar.
-        velocidadeBolaY += 2;
+        proximoNivel(bola, jogador);
+        proximoNivel(bolaComputador, jogadorComputador);
         blockRows = Math.min(blockRows + 1, blockMaxRows);
         createBlocks();
     }
 
     //Pontuação
-    context.font = "20px serif";
-    context.fillText(pontuacao, 10, 25);
-    if(modoComputador) context.fillText(pontuacaoComputador, jogoWidth-30, 25);
+    context.font = "15px serif";
+    context.fillText(pontuacao, 10, 20);
+    context.fillText(nomeJogador, 10, 35)
+    if(modoComputador){
+        context.fillText(pontuacaoComputador, jogoWidth-50, 20);
+        context.fillText("Computador", jogoWidth-80, 35);
+    }
+
 }
 
 function limites(xPosition){
@@ -263,9 +271,41 @@ function rebote(bola){
         bola.velocityX *= -1;
     }else if(bola.y + bola.height>= jogoHeight){
         //Se a bola tocar embaixo do canva
-        //Fim de jogo
-        fimJogo();
+        bola.velocityX = 0;
+        bola.velocityY = 0;
         return 1;     
+    }
+}
+
+function dificuldade(){
+    let select = document.getElementById("dificuldade");
+    var nivel = select.value;
+    
+    var dificuldade = "facil";
+
+    if(nivel != dificuldade)resetGame();
+
+    if(nivel == "facil"){
+        alturaNivel = 10;
+    }else if(nivel == "medio"){
+        alturaNivel = 20;
+    }else if(nivel == "dificil"){
+        alturaNivel = 30;
+    }
+}
+
+function proximoNivel(bola, jogador){
+    if(bola.velocityX < 0 || bola.velocityY < 0){
+        if(bola.velocityX < 0) bola.velocityX *= -1;
+        if(bola.velocityY < 0) bola.velocityY *= -1
+        bola.velocityX += .5;
+        bola.velocityY += .5;
+    }else{
+        bola.velocityX += .5;
+        bola.velocityY += .5;
+    }
+    if(jogador.y >= (jogoHeight/2)-30){
+        jogador.y -= alturaNivel;
     }
 }
 

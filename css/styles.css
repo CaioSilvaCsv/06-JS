@@ -4,6 +4,7 @@
     --corborda: rgb(17, 56, 71);
     --background-color: rgb(0, 0, 0);
     --background-color-page: rgb(255, 255, 255);
+    --fundo-selecao: rgb(253, 186, 68 );
 }
 
 
@@ -45,6 +46,17 @@ a:hover{
     text-align: start;
 }
 
+#dificuldade{
+  font-family: "Doto", serif;
+  color:var(--corborda);
+  font-weight: 700;
+  background-color: var(--fundo-selecao);
+}
+
+#dificuldade select {
+  display: none;
+}
+
 @media screen and (max-width: 1000px){
     body{
         display: grid;
@@ -58,6 +70,7 @@ a:hover{
         --corborda: rgb(210, 236, 247);
         --background-color: rgb(49, 49, 56);
         --background-color-page : black;
+        --fundo-selecao: rgb(143, 68, 253);
     }
 
 }
@@ -144,7 +157,7 @@ a:hover{
   content: "";
   right: -28px;
   left: auto;
-  background-color: #8f44fd;
+  background-color: var(--fundo-selecao);
 }
 
 #button .checkbox:checked + .knobs:before {
