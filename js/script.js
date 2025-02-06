@@ -147,8 +147,10 @@ function update(){
     //A detecção da bola batendo nas paredes e o rebote e caso toque no "chão" será descontado 100 pontos.
     if (fim = rebote(bola) == 1) pontuacao - 100;
     if (fim = rebote(bolaComputador) == 1 ) pontuacaoComputador - 100;
-
-    if(((bola.velocityX == 0) && (bola.velocityY == 0)) && ((bolaComputador.velocityX == 0) && (bolaComputador.velocityY == 0))) fimJogo();
+    if(modoComputador){
+        if(((bola.velocityX == 0) && (bola.velocityY == 0)) && 
+            (bolaComputador.velocityX == 0) && (bolaComputador.velocityY == 0)) fimJogo();
+    }else if((bola.velocityX == 0) && (bola.velocityY == 0)) fimJogo();
 
     // bater a bola e subir novamente.
     if(topColisao(bola, jogador) || bottomColisao(bola, jogador)){
