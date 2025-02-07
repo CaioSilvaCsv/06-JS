@@ -35,7 +35,7 @@ let bolaVelocityX = velocidadeBolaX;
 let bolaVelocityY = velocidadeBolaY;
 
 let bola = {
-    x : numAleatorio(0, jogoWidth-10),
+    x : numAleatorio(10, jogoWidth-20),
     y : jogoHeight/2,
     width : bolaWidth,
     height : bolaHeight,
@@ -361,7 +361,7 @@ async function resetGame(){
     };
 
     bola = {
-        x : numAleatorio(0, jogoWidth-10),
+        x : numAleatorio(10, jogoWidth-20),
         y : jogoHeight/2,
         width : bolaWidth,
         height : bolaHeight,
@@ -371,7 +371,7 @@ async function resetGame(){
     if(select.value == "dificil") velocidadeBola(bola, .7);
 
     bolaComputador = {
-        x : numAleatorio(0, jogoWidth-10),
+        x : numAleatorio(10, jogoWidth-20),
         y : jogoHeight/2,
         width : bolaWidth,
         height : bolaHeight,
@@ -494,7 +494,7 @@ let bolaCVelocityX = velocidadeBolaX;
 let bolaCVelocityY = velocidadeBolaX;
 
 let bolaComputador = {
-    x : numAleatorio(0, jogoWidth-10),
+    x : numAleatorio(10, jogoWidth-20),
     y : jogoHeight/2,
     width : bolaWidth,
     height : bolaHeight,
