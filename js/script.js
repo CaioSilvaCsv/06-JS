@@ -60,13 +60,13 @@ let blockY = 45;
 //Sobre a dificuldade
 let alturaNivel = 10;
 
-
-window.onload = function(){
+window.onload = async function(){
+    nomeJogador = await jogadorNome();
     jogo = document.getElementById("jogo");
     jogo.height = jogoHeight;
     jogo.width = jogoWidth;
     context = jogo.getContext("2d"); //feito para desenhar o jogo.
-    nomeJogador = jogadorNome();
+    
     //Desenhar inicio do jogo.
     context.fillStyle = "lightgreen";
     context.fillRect(jogador.x, jogador.y, jogador.width, jogador.height);
@@ -285,29 +285,36 @@ function dificuldade(){
     
     var dificuldade = "facil";
 
-    if(nivel != dificuldade)resetGame();
-
     if(nivel == "facil"){
         alturaNivel = 10;
     }else if(nivel == "medio"){
         alturaNivel = 20;
+        jogadorComputadorSpeedX = 6;
     }else if(nivel == "dificil"){
+        jogadorWidth = 70;
         alturaNivel = 30;
+        jogadorComputadorSpeedX = 7;
     }
+
+    if(nivel != dificuldade)resetGame();
 }
 
 function proximoNivel(bola, jogador){
+    velocidadeBola(bola, .5)
+    if(jogador.y >= (jogoHeight/2)-30){
+        jogador.y -= alturaNivel;
+    }
+}
+
+function velocidadeBola(bola, multiplicdor){
     if(bola.velocityX < 0 || bola.velocityY < 0){
         if(bola.velocityX < 0) bola.velocityX *= -1;
         if(bola.velocityY < 0) bola.velocityY *= -1
-        bola.velocityX += .5;
-        bola.velocityY += .5;
+        bola.velocityX += multiplicdor;
+        bola.velocityY += multiplicdor;
     }else{
-        bola.velocityX += .5;
-        bola.velocityY += .5;
-    }
-    if(jogador.y >= (jogoHeight/2)-30){
-        jogador.y -= alturaNivel;
+        bola.velocityX += multiplicdor;
+        bola.velocityY += multiplicdor;
     }
 }
 
@@ -328,12 +335,14 @@ function createBlocks(){
     blockCount = blockArray.length;
 }
 
-function resetGame(){
-    nomeJogador = jogadorNome();
+async function resetGame(){
+    nomeJogador = await jogadorNome();
     gameOver = false;
+    let select = document.getElementById("dificuldade");
 
     velocidadeBolaX = 3;    
     velocidadeBolaY = 2; 
+     
 
     jogador = {
         x: jogoWidth/2 - jogadorWidth/2,
@@ -359,6 +368,7 @@ function resetGame(){
         velocityX : bolaVelocityX,
         velocityY : bolaVelocityY
     }
+    if(select.value == "dificil") velocidadeBola(bola, .7);
 
     bolaComputador = {
         x : numAleatorio(0, jogoWidth-10),
@@ -368,6 +378,7 @@ function resetGame(){
         velocityX : bolaCVelocityX,
         velocityY : bolaCVelocityY
     }
+    if(select.value == "dificil") velocidadeBola(bolaComputador, .7);
 
     blockArray = [];
     blockRows = 3;
@@ -397,13 +408,29 @@ function listarRanking(){
 
 function jogadorNome(){
 
-    nome = prompt("Digite o seu nome: ");
+    return new Promise((resolve) =>{
+        const dialog = document.getElementById("nomeJogador");
+        const input = document.getElementById("nome");
+        const confirmar = document.getElementById("confirmaNome");
 
-    if(nome === "" || nome === null) {
-        window.alert("O nome atribuído será -O careca-")
-        nome = "O careca";
-    }
-    return nome;    
+        const nomeSalvo = sessionStorage.getItem("nomeJogador");
+        if(nomeSalvo) input.value = nomeSalvo;
+
+        dialog.showModal();
+
+        confirmar.onclick = () =>{
+            let nome = input.value.trim();
+
+            if(nome === "") {
+                window.alert("O nome atribuído será -O careca-")
+                nome = "O careca";
+            }
+
+            sessionStorage.setItem("nomeJogador", nome);
+            dialog.close();
+            resolve(nome)
+        };
+    });   
 }
 
 function salvaPontuacao(jogadorNome, pontuacao){
@@ -473,4 +500,4 @@ let bolaComputador = {
     height : bolaHeight,
     velocityX : bolaCVelocityX,
     velocityY : bolaCVelocityY
-}
+};
